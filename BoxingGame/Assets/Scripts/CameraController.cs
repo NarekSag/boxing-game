@@ -43,6 +43,8 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private LayerMask obstructionLayers = -1;
 
+    public Vector3 CameraPlanarDirection { get => planarDirection; }
+
     //Privates
     private List<Collider> ignoreColliders = new List<Collider>();
     
@@ -100,7 +102,7 @@ public class CameraController : MonoBehaviour
         targetVerticalAngle = Mathf.Clamp(targetVerticalAngle + mouseY, minVerticalAngle, maxVerticalAngle);
         targetDistance = Mathf.Clamp(targetDistance + zoom, minDistance, maxDistance);
 
-        Debug.DrawLine(mainCamera.transform.position, mainCamera.transform.position + planarDirection, Color.cyan);
+        //Debug.DrawLine(mainCamera.transform.position, mainCamera.transform.position + planarDirection, Color.cyan);
 
         //Handle Obstructions
         float smallestDistance = targetDistance;
