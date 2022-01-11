@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     private const string CROUCH_TO_PRONE = "Base Layer.Crouch To Prone";
     private const string PRONE_TO_STAND = "Base Layer.Prone To Stand";
     private const string PRONE_TO_CROUCH = "Base Layer.Prone To Crouch";
+
+    private const string FORWARD = "Forward";
+    private const string PRONE_END = "ProneEnd";
     #endregion
 
     #region Variables
@@ -44,10 +47,11 @@ public class PlayerController : MonoBehaviour
     private float moveSharpness = 10f;
 
     private Animator animator;
-    private CapsuleCollider capsuleCollider;
+    private CapsuleCollider collider;
     private PlayerInput input;
     private CameraController cameraController;
 
+    private bool proning;
     private float runSpeed;
     private float sprintSpeed;
     private float rotationSharpness;
@@ -69,7 +73,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
+        collider = GetComponent<CapsuleCollider>();
         input = GetComponent<PlayerInput>();
         cameraController = GetComponent<CameraController>();
 
@@ -95,6 +99,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if(proning)
+        {
+            return;
+        }
+
         Vector3 moveInputVector = new Vector3(input.MoveAxisRightRaw, 0, input.MoveAxisForwardRaw).normalized;
         Vector3 cameraPlanarDirection = cameraController.CameraPlanarDirection;
         Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection);
@@ -126,12 +135,17 @@ public class PlayerController : MonoBehaviour
         }
 
         //Animations
-        animator.SetFloat("Forward", newSpeed);
+        animator.SetFloat(FORWARD, newSpeed);
     }
 
     private void LateUpdate()
     {
-        switch(stance)
+        if (proning)
+        {
+            return;
+        }
+
+        switch (stance)
         {
             case PlayerStance.Standing:
                 if(input.Crouching.PressedDown())
@@ -193,6 +207,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!CharacterOverlap(proningCapsule))
                     {
+                        newSpeed = 0;
+                        proning = true;
+                        animator.SetFloat(FORWARD, newSpeed);
+
                         runSpeed = proningSpeed.x;
                         sprintSpeed = proningSpeed.y;
                         rotationSharpness = proningRotationSharpness;
@@ -221,6 +239,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!CharacterOverlap(proningCapsule))
                     {
+                        newSpeed = 0;
+                        proning = true;
+                        animator.SetFloat(FORWARD, newSpeed);
+
                         runSpeed = proningSpeed.x;
                         sprintSpeed = proningSpeed.y;
                         rotationSharpness = proningRotationSharpness;
@@ -236,6 +258,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!CharacterOverlap(standingCapsule))
                     {
+                        newSpeed = 0;
+                        proning = true;
+                        animator.SetFloat(FORWARD, newSpeed);
+
                         runSpeed = standingSpeed.x;
                         sprintSpeed = standingSpeed.y;
                         rotationSharpness = standingRotationSharpness;
@@ -249,6 +275,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!CharacterOverlap(crouchingCapsule))
                     {
+                        newSpeed = 0;
+                        proning = true;
+                        animator.SetFloat(FORWARD, newSpeed);
+
                         runSpeed = crouchingSpeed.x;
                         sprintSpeed = crouchingSpeed.y;
                         rotationSharpness = crouchingRotationSharpness;
@@ -263,11 +293,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    private bool CharacterOverlap(Vector3 dimensions)
+    private bool CharacterOverlap(Vector3 dimensions) 
     {
         float radius = dimensions.x;
         float height = dimensions.y;
-        Vector3 center = new Vector3(capsuleCollider.center.x, dimensions.z, capsuleCollider.center.z);
+        Vector3 center = new Vector3(collider.center.x, dimensions.z, collider.center.z);
 
         Vector3 point0;
         Vector3 point1;
@@ -285,7 +315,7 @@ public class PlayerController : MonoBehaviour
         int numOverlaps = Physics.OverlapCapsuleNonAlloc(point0, point1, radius, obstructions, layerMask);
         for(int i = 0; i < numOverlaps; i++)
         {
-            if(obstructions[i] == capsuleCollider)
+            if(obstructions[i] == collider)
             {
                 numOverlaps--;
             }
@@ -296,9 +326,21 @@ public class PlayerController : MonoBehaviour
 
     private void SetCapsuleDimensions(Vector3 dimensions)
     {
-        capsuleCollider.center = new Vector3(capsuleCollider.center.x, dimensions.z, capsuleCollider.center.z);
-        capsuleCollider.radius = dimensions.x;
-        capsuleCollider.height = dimensions.y;
+        collider.center = new Vector3(collider.center.x, dimensions.z, collider.center.z);
+        collider.radius = dimensions.x;
+        collider.height = dimensions.y;
+    }
+
+    public void OnSMBEvent(string eventName)
+    {
+        switch(eventName)
+        {
+            case PRONE_END:
+                proning = false;
+                break;
+            default:
+                break;
+        }
     }
 
     #endregion
