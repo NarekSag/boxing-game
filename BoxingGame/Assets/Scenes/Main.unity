@@ -214,6 +214,34 @@ MonoBehaviour:
   Proning:
     primary: 120
     alternate: 0
+--- !u!114 &152946338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152946334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e2f2fc81f6ea047bb75305fee308d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
+  eventString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 152946335}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSMBEvent
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ProneEnd
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &152946339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1480f57458ed5654e9dd1022586742b6,
