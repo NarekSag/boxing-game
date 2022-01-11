@@ -26,25 +26,26 @@ public class Input
 
 public class PlayerInput : MonoBehaviour
 {
-    public Input forward;
-    public Input backward;
-    public Input left;
-    public Input right;
-    public Input sprint;
+    public Input Forward;
+    public Input Backward;
+    public Input Left;
+    public Input Right;
+    public Input Sprint;
+    public Input Aim;
 
     public int MoveAxisForwardRaw
     {
         get
         {
-            if (forward.Pressed() && backward.Pressed())
+            if (Forward.Pressed() && Backward.Pressed())
             {
                 return 0;
             }
-            else if (forward.Pressed())
+            else if (Forward.Pressed())
             {
                 return 1;
             }
-            else if (backward.Pressed())
+            else if (Backward.Pressed())
             {
                 return -1;
             }
@@ -59,15 +60,15 @@ public class PlayerInput : MonoBehaviour
     {
         get
         {
-            if (right.Pressed() && left.Pressed())
+            if (Right.Pressed() && Left.Pressed())
             {
                 return 0;
             }
-            else if (right.Pressed())
+            else if (Right.Pressed())
             {
                 return 1;
             }
-            else if (left.Pressed())
+            else if (Left.Pressed())
             {
                 return -1;
             }

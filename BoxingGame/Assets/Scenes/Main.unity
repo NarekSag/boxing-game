@@ -187,20 +187,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6354ec5278fbc348a80f0e807e60ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forward:
+  Forward:
     primary: 119
     alternate: 0
-  backward:
+  Backward:
     primary: 115
     alternate: 0
-  left:
+  Left:
     primary: 97
     alternate: 0
-  right:
+  Right:
     primary: 100
     alternate: 0
-  sprint:
+  Sprint:
     primary: 304
+    alternate: 0
+  Aim:
+    primary: 324
     alternate: 0
 --- !u!4 &152946339 stripped
 Transform:
@@ -376,19 +379,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6354ec5278fbc348a80f0e807e60ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forward:
+  Forward:
     primary: 0
     alternate: 0
-  backward:
+  Backward:
     primary: 0
     alternate: 0
-  left:
+  Left:
     primary: 0
     alternate: 0
-  right:
+  Right:
     primary: 0
     alternate: 0
-  sprint:
+  Sprint:
+    primary: 0
+    alternate: 0
+  Aim:
     primary: 0
     alternate: 0
 --- !u!1 &705507993
