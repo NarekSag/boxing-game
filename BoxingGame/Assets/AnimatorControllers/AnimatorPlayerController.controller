@@ -18,7 +18,7 @@ BlendTree:
     m_DirectBlendParameter: Strafing
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 06ff8744c90a62f40826ba82d31591f1,
+    m_Motion: {fileID: -203655887218126122, guid: 04ca0b78a2457764bbd5e0bf3a7af637,
       type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
@@ -73,19 +73,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StrafingX
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: StrafingZ
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -134,7 +134,7 @@ BlendTree:
     m_DirectBlendParameter: Strafing
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 556d6b6fb1531ec449eab0e2cc2bae6d,
+    m_Motion: {fileID: -203655887218126122, guid: ff05b9f7905e70e4f9b55f3625806b0a,
       type: 3}
     m_Threshold: 12
     m_Position: {x: 0, y: -2}
@@ -151,7 +151,7 @@ BlendTree:
     m_DirectBlendParameter: Strafing
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: b8637441c07d4d445bdb51f2402c0e5f,
+    m_Motion: {fileID: -203655887218126122, guid: 15c822b26b16e634292d7604050d13c4,
       type: 3}
     m_Threshold: 16
     m_Position: {x: 2, y: 0}
@@ -160,7 +160,7 @@ BlendTree:
     m_DirectBlendParameter: Strafing
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 88552ce0384a1fc42b57f3f9c3703e9c,
+    m_Motion: {fileID: -203655887218126122, guid: ee9b95e9db010804cb7f383f62d1ada6,
       type: 3}
     m_Threshold: 18
     m_Position: {x: -2, y: 0}
@@ -215,7 +215,7 @@ BlendTree:
     m_DirectBlendParameter: Strafing
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 4705cc3e44627d6489c9fb39589f5e5a,
+    m_Motion: {fileID: -203655887218126122, guid: cbcf9a6d814a1044ea9d0aa97413c83c,
       type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}

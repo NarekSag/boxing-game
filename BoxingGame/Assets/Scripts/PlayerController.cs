@@ -57,15 +57,18 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveInputVectorOriented = cameraPlanarRotation * moveInputVector.normalized;
 
+        strafing = cameraController.LockedOn;
         if(strafing)
         {
             sprinting = input.Sprint.PressedDown() && (moveInputVector != Vector3.zero);
-            strafing = input.Aim.Pressed() && !sprinting;
         }
         else
         {
             sprinting = input.Sprint.Pressed() && (moveInputVector != Vector3.zero);
-            strafing = input.Aim.PressedDown();
+        }
+        if(sprinting)
+        {
+            cameraController.ToggleLock(false);
         }
 
         //Move speed
@@ -90,7 +93,10 @@ public class PlayerController : MonoBehaviour
         //Rotation
         if (strafing)
         {
-            targetRotation = Quaternion.LookRotation(cameraPlanarDirection);
+            Vector3 toTarget = cameraController.Target.TargetTransform.position - transform.position;
+            Vector3 planarToTarget = Vector3.ProjectOnPlane(toTarget, Vector3.up);
+
+            targetRotation = Quaternion.LookRotation(planarToTarget);
             newRotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSharpness);
             transform.rotation = newRotation;
         }
@@ -115,6 +121,12 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Strafing", strafeParameter);
         animator.SetFloat("StrafingX", Mathf.Round(strafeParameterXZ.x * 100f) / 100f);
         animator.SetFloat("StrafingZ", Mathf.Round(strafeParameterXZ.z * 100f) / 100f);
+
+        //Lock On
+        if(input.LockOn.PressedDown())
+        {
+            cameraController.ToggleLock(!cameraController.LockedOn);
+        }
     }
 
     #endregion
