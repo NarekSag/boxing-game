@@ -96,7 +96,7 @@ public class CameraController : MonoBehaviour
             mouseY *= -1f;
         }
 
-        Vector3 focusPosition = followTransform.position + new Vector3(framing.x, framing.y, 0);
+        Vector3 focusPosition = followTransform.position + followTransform.TransformDirection(framing);
 
         planarDirection = Quaternion.Euler(0, mouseX, 0) * planarDirection;
         targetVerticalAngle = Mathf.Clamp(targetVerticalAngle + mouseY, minVerticalAngle, maxVerticalAngle);
