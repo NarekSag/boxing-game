@@ -34,5 +34,8 @@ public class PunchingBag : MonoBehaviour, ITargetable, IHurtResponder
     public void Response(HitData data)
     {
         Debug.Log("HURT RESPONSE");
+        Vector3 force = -data.hitNormal * data.damage;
+        Vector3 point = data.hitPoint;
+        rb.AddForceAtPosition(force, point, ForceMode.Impulse);
     }
 }

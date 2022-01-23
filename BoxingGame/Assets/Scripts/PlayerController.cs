@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHitResponder
 {
+    private const string animJab = "Base Layer.Boxing Jab Left";
+
     #region Variables
 
     [Header("Movement")]
@@ -20,9 +22,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float moveSharpness = 10f;
 
+    [Header("Attacking")]
+    [SerializeField]
+    private int damage = 10;
+    [SerializeField]
+    private HitBox hitBoxLeftFist;
+
     private Animator animator;
     private PlayerInput input;
     private CameraController cameraController;
+    private SMBEventCurrator eventCurrator;
 
     private bool strafing;
     private bool sprinting;
@@ -36,6 +45,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 newVelocity;
     private Quaternion newRotation;
 
+    private bool isJabbing;
+    private bool inAnimation;
+    private Vector3 animatorVelocity;
+    private Quaternion animatorDeltaRotation;
+    private List<GameObject> objectHit = new List<GameObject>();
+
+    int IHitResponder.Damage {get => damage;}
+
     #endregion
 
     #region Methods
@@ -45,8 +62,10 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         input = GetComponent<PlayerInput>();
         cameraController = GetComponent<CameraController>();
+        eventCurrator = GetComponent<SMBEventCurrator>();
 
-        animator.applyRootMotion = false;
+        hitBoxLeftFist.HitResponder = this;
+        eventCurrator.EventString.AddListener(OnSMBEvent);
     }
 
     private void Update()
@@ -87,11 +106,22 @@ public class PlayerController : MonoBehaviour
         newSpeed = Mathf.Lerp(newSpeed, targetSpeed, Time.deltaTime * moveSharpness);
 
         //Velocity
-        newVelocity = moveInputVectorOriented * newSpeed;
+        if(inAnimation)
+        {
+            newVelocity = animator.velocity;
+        }
+        else
+        {
+            newVelocity = moveInputVectorOriented * newSpeed;
+        }
         transform.Translate(newVelocity * Time.deltaTime, Space.World);
 
         //Rotation
-        if (strafing)
+        if (inAnimation)
+        {
+            transform.rotation *= animatorDeltaRotation;
+        }
+        else if (strafing)
         {
             Vector3 toTarget = cameraController.Target.TargetTransform.position - transform.position;
             Vector3 planarToTarget = Vector3.ProjectOnPlane(toTarget, Vector3.up);
@@ -127,6 +157,68 @@ public class PlayerController : MonoBehaviour
         {
             cameraController.ToggleLock(!cameraController.LockedOn);
         }
+
+        if(!inAnimation)
+        {
+            if(input.Attack.PressedDown())
+            {
+                inAnimation = true;
+                animator.CrossFadeInFixedTime(animJab, 0.1f, 0, 0);
+            }
+        }
+
+        if(isJabbing)
+        {
+            hitBoxLeftFist.CheckHit();
+        }
+    }
+
+    private void OnAnimatorMove()
+    {
+        if(inAnimation)
+        {
+            animatorVelocity = animator.velocity;
+            animatorDeltaRotation = animator.deltaRotation;
+        }    
+    }
+
+    public void OnSMBEvent(string eventName)
+    {
+        switch(eventName)
+        {
+            case "JabStart":
+                objectHit.Clear();
+                isJabbing = true;
+                Debug.Log("JabStarted");
+                break;
+            case "JabEnd":
+                isJabbing = false;
+                break;
+            case "AnimationEnd":
+                inAnimation = false;
+                break;
+        }
+    }
+
+    bool IHitResponder.CheckHit(HitData data)
+    {
+        if (data.hurtbox.Owner == gameObject)
+        {
+            return false;
+        }
+        else if(objectHit.Contains(data.hurtbox.Owner))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    void IHitResponder.Response(HitData data)
+    {
+        objectHit.Add(data.hurtbox.Owner);
     }
 
     #endregion

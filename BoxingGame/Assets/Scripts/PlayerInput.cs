@@ -32,6 +32,7 @@ public class PlayerInput : MonoBehaviour
     public Input Right;
     public Input Sprint;
     public Input LockOn;
+    public Input Attack;
 
     public int MoveAxisForwardRaw
     {
