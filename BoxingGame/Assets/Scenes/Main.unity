@@ -147,7 +147,7 @@ MonoBehaviour:
   sprintSpeed: 8
   rotationSharpness: 10
   moveSharpness: 10
-  damage: 1000
+  damage: 50
   hitBoxLeftFist: {fileID: 179110788}
 --- !u!114 &152946336
 MonoBehaviour:
